@@ -6,6 +6,8 @@ describe Match do
   it { should belong_to(:p1) }
   it { should belong_to(:p2) }
 
+  it { should have_many(:games) }
+
   it 'can be a doubles match or not' do
 		match = Match.create(doubles_match: false)
 		expect(match.doubles_match).to eq false
