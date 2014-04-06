@@ -11,12 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140305143409) do
+ActiveRecord::Schema.define(version: 20140406152130) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "players", force: true do |t|
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -26,5 +27,8 @@ ActiveRecord::Schema.define(version: 20140305143409) do
     t.integer "server_id"
     t.boolean "p1_on_left"
   end
+
+  add_index "points", ["server_id"], name: "index_points_on_server_id", using: :btree
+  add_index "points", ["winner_id"], name: "index_points_on_winner_id", using: :btree
 
 end

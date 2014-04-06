@@ -1,8 +1,8 @@
 class CreatePoints < ActiveRecord::Migration
   def change
     create_table :points do |t|
-      t.integer :winner_id
-      t.integer :server_id
+      t.references :winner, index: true
+      t.references :server, index: true
       t.boolean :p1_on_left
     end
   end

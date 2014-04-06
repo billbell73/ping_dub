@@ -2,6 +2,9 @@ require 'spec_helper'
 
 describe Point do
 
+	it { should belong_to(:winner) }
+	it { should belong_to(:server) }
+
 	let(:point) { Point.new(p1_on_left: true) }
   
   it 'knows which end player 1 is' do
