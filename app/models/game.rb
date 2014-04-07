@@ -8,5 +8,11 @@ class Game < ActiveRecord::Base
   	self.points.where(winner: player).count
   end
 
+  def opponent_points(player)
+  	self.points.where.not(winner: player).count
+  end
+
+  
+
 
 end

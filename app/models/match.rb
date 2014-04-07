@@ -11,5 +11,7 @@ class Match < ActiveRecord::Base
   def current_game
   	self.games.last
   end
+
+  
   
 end
