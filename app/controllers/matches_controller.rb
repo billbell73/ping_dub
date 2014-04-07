@@ -6,7 +6,7 @@ class MatchesController < ApplicationController
   def show
   	@match = Match.find(params[:id])
   	@p1 = @match.p1
-  	@current_game = @match.games.last
+  	@current_game = @match.current_game
   end
 
 end
