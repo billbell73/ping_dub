@@ -4,7 +4,9 @@ class Game < ActiveRecord::Base
 
   has_many :points
 
-  
+  def player_points(player)
+  	self.points.where(winner: player).count
+  end
 
 
 end
