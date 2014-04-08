@@ -1,3 +1,5 @@
+require 'game_type'
+
 class Match < ActiveRecord::Base
   belongs_to :winner, class_name: 'Player'
   belongs_to :p1, class_name: 'Player'
@@ -43,5 +45,25 @@ class Match < ActiveRecord::Base
   def games_won(player)
     self.games.where(winner: player).count
   end
+
+  def p1_serving?(nth_game, points_played)
+    game_type(nth_game).p1_serving?(points_played)
+  end
+
+  def game_type(nth_game)
+    OddGame.new(self.p1_starts_left, self.p1_first_server)
+  end
+
+
+  def game_type(nth_game)
+    if nth_game == self.best_of
+      LastGame.new(self.p1_starts_left, self.p1_first_server)
+    elsif nth_game % 2 == 1
+      OddGame.new(self.p1_starts_left, self.p1_first_server)
+    else
+      EvenGame.new(self.p1_starts_left, self.p1_first_server)
+    end
+  end
+  
   
 end
