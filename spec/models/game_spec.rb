@@ -6,20 +6,54 @@ describe Game do
   it { should belong_to(:match) }
   it { should have_many(:points) }
 
+  let (:player1) { create(:player) }
+  let (:player2) { create(:player) }
+  let (:game1) { create(:game) }
+
+  def set_score player1_points, player2_points
+		player1_points.times{ create(:point, winner: player1, game: game1) }
+		player2_points.times{ create(:point, winner: player2, game: game1) }
+	end
+
   it 'can tell game score for a player' do
-  	player1 = create(:player)
-  	game1 = create(:game)
-  	5.times{ create(:point, winner: player1, game: game1) }
+    set_score 5, 3
 		expect(game1.player_points(player1)).to eq 5
 	end
 
 	it 'can tell game score for a player\'s opponent' do
-  	player1 = create(:player)
-  	player2 = create(:player)
-  	game1 = create(:game)
-  	3.times{ create(:point, winner: player2, game: game1) }
+  	set_score 5, 3
 		expect(game1.opponent_points(player1)).to eq 3
 	end
+
+	it 'can tell if game not won' do
+		set_score 10, 10
+  	3.times{ create(:point, winner: player2, game: game1) }
+		expect(game1.record_if_won_game(player2)).to be_nil
+    expect(game1.winner).to be_nil
+	end
+
+  it 'player 2 wins if reaches 11 and player 1 has none' do
+    set_score 0, 11
+    expect(game1.record_if_won_game(player2)).not_to be_nil
+    expect(game1.winner).to eq player2
+  end
+
+  it 'player 1 doesn\'t win if gets 11, but player 2 has 10' do
+    set_score 11, 10
+    expect(game1.record_if_won_game(player1)).to be_nil
+  end
+
+  it 'if player 2 has 11, player 1 wins on 13' do
+    set_score 13, 11
+    game1.record_if_won_game(player1)
+    expect(game1.winner).to equal player1
+  end
+
+  it 'if player 2 has 14 and player 1 has 13, no winner' do
+    set_score 13, 14
+    game1.record_if_won_game(player1)
+    expect(game1.winner).to be_nil
+  end
 
 
 

@@ -12,7 +12,17 @@ class Game < ActiveRecord::Base
   	self.points.where.not(winner: player).count
   end
 
-  
+  def two_ahead?(player)
+		player_points(player) == opponent_points(player) + 2
+	end
+
+  def record_if_won_game(player)
+		if (player_points(player) == 11 && opponent_points(player) <= 9) || 
+				(opponent_points(player) > 10 && two_ahead?(player))
+			self.update(winner: player)
+		end
+	end
+
 
 
 end
