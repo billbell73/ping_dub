@@ -10,7 +10,17 @@ class Match < ActiveRecord::Base
 
   def increment_score(point_winner)
     Point.create(winner: point_winner, game: current_game)
-    current_game.record_if_won_game(point_winner)
+    if current_game.record_if_won_game(point_winner)
+      finish_game(point_winner)
+    end
+  end
+
+  def finish_game(point_winner)
+    if games_won(point_winner) == 2
+      self.update(winner: point_winner)
+    else
+      Game.create(match: self)
+    end
   end
 
   def games_won(player)

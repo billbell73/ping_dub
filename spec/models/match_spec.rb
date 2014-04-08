@@ -10,15 +10,16 @@ describe Match do
   let (:player1) { create(:player) }
   let (:player2) { create(:player) }
   let (:match) { create(:match)}
-  let (:game1) { create(:game, match: match ) }
-  let (:game2) { create(:game, match: match ) }
 
 	def set_score(p1_game1, p2_game1, p1_game2=0, p2_game2=0, match=match)
-		increment(p1_game1, game1, match, player1)
-		increment(p2_game1, game1, match, player2)
+		create(:game, match: match)
+		increment(p1_game1, match, player1)
+		increment(p2_game1, match, player2)
+		increment(p1_game2, match, player1)
+		increment(p2_game2, match, player2)
 	end
 
-	def increment(points, game, match, player)
+	def increment(points, match, player)
 		points.times{ match.increment_score(player) }
 	end
 
@@ -27,7 +28,8 @@ describe Match do
 	end
 
 	it 'can increment score' do
-		increment(2, game1, match, player1)
+		game1 = create(:game, match: match)
+		increment(2, match, player1)
 		expect(game1.player_points(player1)).to eq 2
 	end
 
@@ -35,6 +37,17 @@ describe Match do
 		set_score(7, 11)
 		expect(match.games_won(player2)).to equal 1
 		expect(match.games_won(player1)).to equal 0
+	end
+
+	it 'can complete games and start new games' do
+		set_score(7, 11, 11, 6)
+		expect(match.games_won(player2)).to equal 1
+		expect(match.games_won(player1)).to equal 1
+	end
+
+	it 'knows when match won' do
+		set_score(7, 11, 6, 11)
+		expect(match.winner).to eq player2
 	end
 
 end
