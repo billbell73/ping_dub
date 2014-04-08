@@ -35,7 +35,7 @@ class Match < ActiveRecord::Base
   end
 
   def finish_game(point_winner)
-    if games_won(point_winner) == 2
+    if games_won(point_winner) == games_target
       self.update(winner: point_winner)
     else
       Game.create(match: self)
@@ -48,6 +48,10 @@ class Match < ActiveRecord::Base
 
   def p1_serving?(nth_game, points_played)
     game_type(nth_game).p1_serving?(points_played)
+  end
+
+  def games_target
+    (self.best_of / 2) + 1
   end
 
   def game_type(nth_game)

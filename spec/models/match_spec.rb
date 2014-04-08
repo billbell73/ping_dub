@@ -11,7 +11,11 @@ describe Match do
   let (:player2) { create(:player) }
   let (:match) { create(:match, p1: player1, 
   	                            p2: player2,
-  	                            p1_first_server: true) }
+  	                            p1_first_server: true,
+  	                            best_of: 3) }
+
+  let (:match2) { create(:match, p1_first_server: false,
+  	                             best_of: 5) }
 
 	def set_score(p1_game1, p2_game1, p1_game2=0, p2_game2=0, match=match)
 		create(:game, match: match)
@@ -92,8 +96,6 @@ describe Match do
 
 	context 'Identifying server' do
 
-		let (:match2) { create(:match, p1_first_server: false) }
-
 		it 'says player1 serving after 0 points if starts serving' do
 			expect(match.p1_serving?(1,0)).to equal true
 		end
@@ -115,5 +117,17 @@ describe Match do
 		end
 
 	end
+
+	context 'Identifying when match finished' do
+
+		it 'can tell winning 2 games wins default match' do
+			expect(match.games_target).to equal 2
+		end
+
+		it 'can tell winning 3 games wins best-of-five match' do
+			expect(match2.games_target).to equal 3
+		end
+
+	end	
 
 end

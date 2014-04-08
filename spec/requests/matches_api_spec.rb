@@ -4,7 +4,9 @@ describe 'Matches API' do
 
 	let(:player1) { create(:player) }
 	let(:player2) { create(:player) }
-	let(:match) { create(:match, p1: player1, p2: player2) }
+	let(:match) { create(:match, p1: player1, 
+	                             p2: player2,
+	                             best_of: 3) }
 
 	before do
 		create(:game, match: match)
