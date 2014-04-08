@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140406180557) do
+ActiveRecord::Schema.define(version: 20140408184811) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,6 +33,9 @@ ActiveRecord::Schema.define(version: 20140406180557) do
     t.boolean  "doubles_match"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "best_of"
+    t.boolean  "p1_starts_left"
+    t.boolean  "p1_first_server"
   end
 
   add_index "matches", ["p1_id"], name: "index_matches_on_p1_id", using: :btree
