@@ -9,19 +9,23 @@ describe Match do
 
   let (:player1) { create(:player) }
   let (:player2) { create(:player) }
-  let (:match) { create(:match)}
+  let (:match) { create(:match, p1: player1, p2: player2)}
 
 	def set_score(p1_game1, p2_game1, p1_game2=0, p2_game2=0, match=match)
 		create(:game, match: match)
-		increment(p1_game1, match, player1)
-		increment(p2_game1, match, player2)
-		increment(p1_game2, match, player1)
-		increment(p2_game2, match, player2)
+		increment(p1_game1, match, 1)
+		increment(p2_game1, match, 2)
+		increment(p1_game2, match, 1)
+		increment(p2_game2, match, 2)
 	end
 
 	def increment(points, match, player)
 		points.times{ match.increment_score(player) }
 	end
+
+	it 'can get player' do
+		expect(match.get_player 1).to eq player1
+	end 
 
 	it 'can be a doubles match or not' do
 		expect(match.doubles_match).to eq false
@@ -29,7 +33,7 @@ describe Match do
 
 	it 'can increment score' do
 		game1 = create(:game, match: match)
-		increment(2, match, player1)
+		increment(2, match, 1)
 		expect(game1.player_points(player1)).to eq 2
 	end
 
