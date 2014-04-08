@@ -13,9 +13,13 @@ describe 'Matches API' do
 
 	def increment_score(player_number)
 	  patch api_match_path(match), { p_number: player_number } 
-
 	  @response, @json = response, JSON.parse(response.body)
 	end
+
+	def decrement_score(player_number)
+    patch api_match_path(match), { p_number: player_number, decrement: true } 
+		@response, @json = response, JSON.parse(response.body)
+  end
 
 	it 'returns a success status code' do
 	  increment_score(1)
@@ -24,8 +28,14 @@ describe 'Matches API' do
 
 	it 'can increment score for a player' do
 	  expect { increment_score(1) }.to change{ match.current_game.
-		                                              player_points(player1) }.by(1)
+	                                            player_points(player1) }.by(1)
 	end
+
+	it 'can decrement score for a player' do
+    5.times{increment_score(1)}
+    expect { decrement_score(1) }.to change { match.current_game.
+		                                           player_points(player1) }.by(-1)
+  end
 
 	it 'returns current state of game' do
     5.times{increment_score(1)}
