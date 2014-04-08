@@ -4,14 +4,17 @@ class Match < ActiveRecord::Base
   belongs_to :p2, class_name: 'Player'
   has_many :games
 
-  def increment_score(player)
-  	Point.create(winner: player, game: current_game)
-  end
-
   def current_game
   	self.games.last
   end
 
-  
+  def increment_score(point_winner)
+    Point.create(winner: point_winner, game: current_game)
+    current_game.record_if_won_game(point_winner)
+  end
+
+  def games_won(player)
+    self.games.where(winner: player).count
+  end
   
 end
