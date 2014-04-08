@@ -16,6 +16,17 @@ class Match < ActiveRecord::Base
     end
   end
 
+  def decrement_score(player_number)
+    point_winner = get_player player_number.to_i
+    point = Point.where(winner: point_winner, game: current_game).last
+    if current_game.total_points != 0
+      current_game.update(winner: nil)
+      current_game.points.destroy(point) if point
+    else
+      self.games.destroy(current_game)
+    end
+  end
+
   def get_player number
     return self.p1 if number == 1
     return self.p2 if number == 2

@@ -54,4 +54,38 @@ describe Match do
 		expect(match.winner).to eq player2
 	end
 
+	context 'Decrementing score' do
+
+		it 'can decrement a player\'s score mid-game' do
+			set_score(4, 7)
+			match.decrement_score(1)
+			expect(match.current_game.player_points(player2)).to equal 7
+			expect(match.current_game.player_points(player1)).to equal 3
+		end
+
+		it 'decrementing player 2 score at 7-0 in game leaves score unchanged' do
+			set_score(3, 11, 7, 0)
+			match.decrement_score(2)
+			expect(match.current_game.player_points(player2)).to equal 0
+		end
+
+		it 'initial decrement from 0-0 in 2nd game makes current game first game' do
+			set_score(3, 11, 0, 0)
+			expect(match.games.count).to equal 2
+			match.decrement_score(2)
+			expect(match.games.count).to equal 1
+		end
+
+		it 'decrementing 2 points from 0-0 in 2nd game reduces '\
+																				'player\'s 1st game score by 1' do
+			set_score(3, 11, 0, 0)
+			match.decrement_score(2)
+			expect(match.current_game.player_points(player2)).to equal 11
+			match.decrement_score(2)
+			expect(match.current_game.player_points(player2)).to equal 10
+			expect(match.current_game.winner).to equal nil
+		end	
+
+	end
+
 end

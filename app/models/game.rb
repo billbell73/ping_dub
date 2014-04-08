@@ -23,6 +23,10 @@ class Game < ActiveRecord::Base
 		end
 	end
 
+  def total_points
+    self.points.count
+  end
+
 
 
 end

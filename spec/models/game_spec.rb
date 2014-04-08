@@ -55,6 +55,11 @@ describe Game do
     expect(game1.winner).to be_nil
   end
 
+  it 'can tell total points in game' do
+    set_score 13, 14
+    expect(game1.total_points).to be 27
+  end
+
 
 
 end
