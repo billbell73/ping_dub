@@ -15,7 +15,9 @@ describe Match do
   	                            p1_starts_left:true,
   	                            best_of: 3) }
 
-  let (:match2) { create(:match, p1_first_server: false,
+  let (:match2) { create(:match, p1: player1, 
+	                               p2: player2,
+	                               p1_first_server: false,
                                  p1_starts_left: false,
   	                             best_of: 5) }
 
@@ -44,6 +46,11 @@ describe Match do
 		it 'can tell how many games so far' do
 			set_score(7, 11, 6, 2)
 			expect(match.nth_game).to eq 2
+		end
+
+		it 'can tell max points in game' do
+			set_score(7, 11, 6, 2)
+			expect(match.max_points).to eq 6
 		end
 
 	end
@@ -112,23 +119,29 @@ describe Match do
 	context 'Identifying server' do
 
 		it 'says player1 serving after 0 points if starts serving' do
-			expect(match.p1_serving?(1,0)).to equal true
+			set_score(0,0)
+			expect(match.p1_serving?).to equal true
 		end
 
 		it 'says player2 serving after 2 points if player1 starts' do
-			expect(match.p1_serving?(1,2)).to equal false
+			set_score(0,2)
+			expect(match.p1_serving?).to equal false
 		end
 
 		it 'says player1 serving after 6 points if player2 started' do
-			expect(match2.p1_serving?(1,6)).to equal true
+			set_score(4,2,0,0,match2)
+			expect(match2.p1_serving?).to equal true
 		end
 
 		it 'says player2 serving after 0 points of 2nd game if player1 started' do
-			expect(match.p1_serving?(2,0)).to equal false
+			set_score(7, 11, 0, 0)
+			expect(match.p1_serving?).to equal false
 		end
 
 		it 'says player 2 serving after 4 points of 3rd game if she started' do
-			expect(match2.p1_serving?(3,4)).to equal false
+			set_score(7, 11, 7, 11, match2)
+			increment(4, match2, 1)
+			expect(match2.p1_serving?).to equal false
 		end
 
 	end
@@ -148,20 +161,31 @@ describe Match do
 	context 'Switching sides' do
 
 		it 'says player1 on left for 1st game' do
-			expect(match.p1_on_left?(1, 4)).to equal true
+			set_score(1,3)
+			expect(match.p1_on_left?).to equal true
 		end
 
 		it 'says player1 on right for 2nd game' do
-			expect(match.p1_on_left?(2, 10)).to equal false
+			set_score(5, 11, 6, 0)
+			expect(match.p1_on_left?).to equal false
 		end
 
 		it 'can tell player side in normal game of 5 game match' do
-			expect(match2.p1_on_left?(4, 2)).to equal true
+			set_score(5, 11, 6, 11, match2)
+			increment(5, match2, 2)
+			expect(match2.p1_on_left?).to equal false
 		end
 
-		it 'can tell player side in last possible game of match' do
-			expect(match2.p1_on_left?(5, 3)).to equal false
-			expect(match2.p1_on_left?(5, 10)).to equal true
+		it 'can tell player side early in last possible game of match' do
+			set_score(5, 11, 11, 0)
+			increment(3, match, 2)
+			expect(match.p1_on_left?).to equal true
+		end
+
+		it 'can tell player side late in last possible game of match' do
+			set_score(5, 11, 11, 0)
+			increment(6, match, 2)
+			expect(match.p1_on_left?).to equal false
 		end
 
 	end	

@@ -50,15 +50,16 @@ class Match < ActiveRecord::Base
     self.games.where(winner: player).count
   end
 
-  def p1_serving?(nth_game, points_played)
-    game_type(nth_game).p1_serving?(points_played)
+  def p1_serving?
+    game_type(nth_game).p1_serving?(current_game.total_points)
   end
 
   def max_points
-    [current_game.player_points(1), current_game.player_points(2)].max
+    [current_game.player_points(get_player 1), 
+     current_game.player_points(get_player 2)].max
   end
 
-  def p1_on_left?(nth_game, max_points)
+  def p1_on_left?
     game_type(nth_game).p1_on_left?(max_points)
   end
 
