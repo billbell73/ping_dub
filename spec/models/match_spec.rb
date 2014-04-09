@@ -29,6 +29,12 @@ describe Match do
 		points.times{ match.increment_score(player) }
 	end
 
+	it 'can start match' do
+		match = Match.start_match('zed', 'ted')
+		expect(match.games.count).to eq 1
+		expect(match.p1.name).to eq 'zed'
+	end
+
 	it 'can get player' do
 		expect(match.get_player 1).to eq player1
 	end 

@@ -58,7 +58,6 @@ class Match < ActiveRecord::Base
     OddGame.new(self.p1_starts_left, self.p1_first_server)
   end
 
-
   def game_type(nth_game)
     if nth_game == self.best_of
       LastGame.new(self.p1_starts_left, self.p1_first_server)
@@ -67,6 +66,14 @@ class Match < ActiveRecord::Base
     else
       EvenGame.new(self.p1_starts_left, self.p1_first_server)
     end
+  end
+
+  def self.start_match(p1_name, p2_name)
+    player1 = Player.create(name: p1_name)
+    player2 = Player.create(name: p2_name)
+    match = Match.create(p1: player1, p2: player2)
+    Game.create(match: match)
+    match
   end
   
   

@@ -48,5 +48,12 @@ describe 'Matches API' do
     expect(@json['p1games']).to eq 0
     expect(@json['p2games']).to eq 1
   end
+
+  it 'will start new game on receipt of post request' do
+  	post api_matches_path, { p1_name: 'Geoff', p2_name: 'Mel' } 
+		@response, @json = response, JSON.parse(response.body)
+		match = Match.find(@json['match_id'])
+		expect(match.p2.name).to eq 'Mel'
+  end
 	
 end
