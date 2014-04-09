@@ -3,9 +3,11 @@ class Api::MatchesController < ApplicationController
 	protect_from_forgery with: :null_session
 
 	def create
-		p1_name = params[:p1_name]
-		p2_name = params[:p2_name]
-		@match = Match.start_match(p1_name, p2_name)
+		@match = Match.start_match(params[:p1_name], 
+		                           params[:p2_name],
+		                           params[:best_of],
+		                           params[:p1_first_server],
+		                           params[:p1_starts_left])
 	end
 
 	def show

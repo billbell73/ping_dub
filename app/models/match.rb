@@ -72,10 +72,15 @@ class Match < ActiveRecord::Base
     end
   end
 
-  def self.start_match(p1_name, p2_name)
+  def self.start_match(p1_name, p2_name, best_of=3, 
+                       p1_first_server=true, p1_starts_left=true)
     player1 = Player.create(name: p1_name)
     player2 = Player.create(name: p2_name)
-    match = Match.create(p1: player1, p2: player2)
+    match = Match.create(p1: player1, 
+                         p2: player2, 
+                         best_of: best_of,
+                         p1_first_server: p1_first_server,
+                         p1_starts_left: p1_starts_left)
     Game.create(match: match)
     match
   end

@@ -31,12 +31,6 @@ describe Match do
 		points.times{ match.increment_score(player) }
 	end
 
-	it 'can start match' do
-		match = Match.start_match('zed', 'ted')
-		expect(match.games.count).to eq 1
-		expect(match.p1.name).to eq 'zed'
-	end
-
 	it 'can get player' do
 		expect(match.get_player 1).to eq player1
 	end 
@@ -158,5 +152,19 @@ describe Match do
 		end
 
 	end	
+
+	context 'Starting a match with passed match choices' do
+
+		it 'can start match' do
+			match = Match.start_match('zed', 'ted', 1, false, true)
+			expect(match.games.count).to eq 1
+			expect(match.current_game.points.count).to eq 0
+			expect(match.p1.name).to eq 'zed'
+			expect(match.best_of).to eq 1
+			expect(match.p1_first_server).to eq false
+		end
+
+	end
+
 
 end
