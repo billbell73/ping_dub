@@ -10,6 +10,10 @@ class Match < ActiveRecord::Base
   	self.games.last
   end
 
+  def nth_game
+    self.games.count
+  end
+
   def increment_score(player_number)
     point_winner = get_player player_number.to_i
     Point.create(winner: point_winner, game: current_game)
