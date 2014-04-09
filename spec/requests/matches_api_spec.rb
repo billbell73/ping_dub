@@ -6,7 +6,9 @@ describe 'Matches API' do
 	let(:player2) { create(:player) }
 	let(:match) { create(:match, p1: player1, 
 	                             p2: player2,
-	                             best_of: 3) }
+	                             p1_first_server: false,
+                               p1_starts_left: false,
+  	                           best_of: 5) }
 
 	before do
 		create(:game, match: match)
@@ -47,6 +49,8 @@ describe 'Matches API' do
     expect(@json['p2points']).to eq 0
     expect(@json['p1games']).to eq 0
     expect(@json['p2games']).to eq 1
+    expect(@json['p1_on_left?']).to eq true
+    expect(@json['p1_serving?']).to eq true
   end
 
   context 'Starting a new match' do
