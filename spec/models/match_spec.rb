@@ -12,9 +12,11 @@ describe Match do
   let (:match) { create(:match, p1: player1, 
   	                            p2: player2,
   	                            p1_first_server: true,
+  	                            p1_starts_left:true,
   	                            best_of: 3) }
 
   let (:match2) { create(:match, p1_first_server: false,
+                                 p1_starts_left: false,
   	                             best_of: 5) }
 
 	def set_score(p1_game1, p2_game1, p1_game2=0, p2_game2=0, match=match)
@@ -132,6 +134,27 @@ describe Match do
 
 		it 'can tell winning 3 games wins best-of-five match' do
 			expect(match2.games_target).to equal 3
+		end
+
+	end	
+
+	context 'Switching sides' do
+
+		it 'says player1 on left for 1st game' do
+			expect(match.p1_on_left?(1, 4)).to equal true
+		end
+
+		it 'says player1 on right for 2nd game' do
+			expect(match.p1_on_left?(2, 10)).to equal false
+		end
+
+		it 'can tell player side in normal game of 5 game match' do
+			expect(match2.p1_on_left?(4, 2)).to equal true
+		end
+
+		it 'can tell player side in last possible game of match' do
+			expect(match2.p1_on_left?(5, 3)).to equal false
+			expect(match2.p1_on_left?(5, 10)).to equal true
 		end
 
 	end	

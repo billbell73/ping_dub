@@ -50,12 +50,16 @@ class Match < ActiveRecord::Base
     game_type(nth_game).p1_serving?(points_played)
   end
 
-  def games_target
-    (self.best_of / 2) + 1
+  def max_points
+    [current_game.player_points(1), current_game.player_points(2)].max
   end
 
-  def game_type(nth_game)
-    OddGame.new(self.p1_starts_left, self.p1_first_server)
+  def p1_on_left?(nth_game, max_points)
+    game_type(nth_game).p1_on_left?(max_points)
+  end
+
+  def games_target
+    (self.best_of / 2) + 1
   end
 
   def game_type(nth_game)
