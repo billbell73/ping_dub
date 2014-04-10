@@ -21,6 +21,7 @@ class Api::MatchesController < ApplicationController
 		else
 			@match.increment_score(params[:p_number])
 		end
+		render :show
 	end
 
 	

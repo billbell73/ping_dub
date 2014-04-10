@@ -51,6 +51,7 @@ describe 'Matches API' do
     expect(@json['p2games']).to eq 1
     expect(@json['isP1Left']).to eq false
     expect(@json['isP1Serving']).to eq false
+    expect(@json['p1name']).to eq 'Fred'
   end
 
   context 'Starting a new match' do

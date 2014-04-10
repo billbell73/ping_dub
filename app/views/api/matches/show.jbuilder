@@ -4,3 +4,5 @@ json.p1games @match.games_won(@match.p1)
 json.p2games @match.games_won(@match.p2)
 json.isP1Serving @match.p1_serving?
 json.isP1Left @match.p1_on_left?
+json.p1name @match.p1.name
+json.p2name @match.p2.name
