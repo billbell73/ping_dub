@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'Matches API' do
 
 	let(:player1) { create(:player) }
-	let(:player2) { create(:player) }
+	let(:player2) { create(:player, name: 'Zob') }
 	let(:match) { create(:match, p1: player1, 
 	                             p2: player2,
 	                             p1_first_server: true,
@@ -51,7 +51,14 @@ describe 'Matches API' do
     expect(@json['p2games']).to eq 1
     expect(@json['isP1Left']).to eq false
     expect(@json['isP1Serving']).to eq false
-    expect(@json['p1name']).to eq 'Fred'
+    expect(@json['p2name']).to eq 'Zob'
+  end
+
+  it 'returns match winner name when match won' do
+    32.times{increment_score(1)}
+    expect(@json['matchWinner']).to eq nil
+    increment_score(1)
+    expect(@json['matchWinner']).to eq 'Fred'
   end
 
   context 'Starting a new match' do
