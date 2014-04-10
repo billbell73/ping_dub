@@ -61,6 +61,15 @@ describe 'Matches API' do
     expect(@json['matchWinner']).to eq 'Fred'
   end
 
+  it 'returns game winner name when game just won' do
+    10.times{increment_score(1)}
+    expect(@json['gameJustWonBy']).to eq nil
+    increment_score(1)
+    expect(@json['gameJustWonBy']).to eq 'Fred'
+    increment_score(1)
+    expect(@json['gameJustWonBy']).to eq nil
+  end
+
   context 'Starting a new match' do
 
 	  it 'will start new game on receipt of post request' do

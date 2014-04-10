@@ -6,6 +6,8 @@ class Match < ActiveRecord::Base
   belongs_to :p2, class_name: 'Player'
   has_many :games
 
+  attr_reader :game_just_won_by
+
   def current_game
   	self.games.last
   end
@@ -17,6 +19,7 @@ class Match < ActiveRecord::Base
   def increment_score(player_number)
     point_winner = get_player player_number.to_i
     Point.create(winner: point_winner, game: current_game)
+    @game_just_won_by = nil
     if current_game.record_if_won_game(point_winner)
       finish_game(point_winner)
     end
@@ -43,6 +46,7 @@ class Match < ActiveRecord::Base
     if games_won(point_winner) == games_target
       self.update(winner: point_winner)
     else
+      @game_just_won_by = current_game.winner.name
       Game.create(match: self)
     end
   end
