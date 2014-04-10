@@ -26,7 +26,7 @@ describe Game do
 	end
 
 	it 'can tell if game not won' do
-		set_score 10, 10
+		set_score 3, 3
   	3.times{ create(:point, winner: player2, game: game1) }
 		expect(game1.record_if_won_game(player2)).to be_nil
     expect(game1.winner).to be_nil
@@ -41,6 +41,12 @@ describe Game do
   it 'player 1 doesn\'t win if gets 11, but player 2 has 10' do
     set_score 11, 10
     expect(game1.record_if_won_game(player1)).to be_nil
+  end
+
+  it 'player 1 wins if gets point at 11-10' do
+    set_score 11, 10
+    create(:point, winner: player1, game: game1)
+    expect(game1.record_if_won_game(player1)).to eq true
   end
 
   it 'if player 2 has 11, player 1 wins on 13' do
