@@ -1,5 +1,5 @@
 class Game < ActiveRecord::Base
-  belongs_to :winner, class_name: 'Player'
+  belongs_to :winner, class_name: 'Party'
   belongs_to :match
 
   has_many :points

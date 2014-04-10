@@ -6,8 +6,8 @@ describe Game do
   it { should belong_to(:match) }
   it { should have_many(:points) }
 
-  let (:player1) { create(:player) }
-  let (:player2) { create(:player) }
+  let (:player1) { create(:party) }
+  let (:player2) { create(:party) }
   let (:game1) { create(:game) }
 
   def set_score player1_points, player2_points

@@ -7,8 +7,8 @@ describe Match do
   it { should belong_to(:p2) }
   it { should have_many(:games) }
 
-  let (:player1) { create(:player) }
-  let (:player2) { create(:player) }
+  let (:player1) { create(:party) }
+  let (:player2) { create(:party) }
   let (:match) { create(:match, p1: player1, 
   	                            p2: player2,
   	                            p1_first_server: true,
@@ -188,7 +188,7 @@ describe Match do
 
 	end	
 
-	context 'Starting a match with passed match choices' do
+	context 'Starting a singles match with passed match choices' do
 
 		it 'can start match' do
 			match = Match.start_match('zed', 'ted', 1, false, true)

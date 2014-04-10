@@ -1,6 +1,6 @@
 FactoryGirl.define do
 
-  factory :player, aliases: [:winner, :server] do
+  factory :player do
     name "Fred"
   end
   

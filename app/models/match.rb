@@ -1,9 +1,13 @@
 require 'game_type'
+require 'doubles'
 
 class Match < ActiveRecord::Base
-  belongs_to :winner, class_name: 'Player'
-  belongs_to :p1, class_name: 'Player'
-  belongs_to :p2, class_name: 'Player'
+
+  include Doubles
+
+  belongs_to :winner, class_name: 'Party'
+  belongs_to :p1, class_name: 'Party'
+  belongs_to :p2, class_name: 'Party'
   has_many :games
 
   attr_reader :game_just_won_by
@@ -84,8 +88,8 @@ class Match < ActiveRecord::Base
 
   def self.start_match(p1_name, p2_name, best_of=3, 
                        p1_first_server=true, p1_starts_left=true)
-    player1 = Player.create(name: p1_name)
-    player2 = Player.create(name: p2_name)
+    player1 = Party.create(name: p1_name)
+    player2 = Party.create(name: p2_name)
     match = Match.create(p1: player1, 
                          p2: player2, 
                          best_of: best_of,

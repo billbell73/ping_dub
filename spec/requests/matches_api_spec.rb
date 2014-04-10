@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe 'Matches API' do
 
-	let(:player1) { create(:player) }
-	let(:player2) { create(:player, name: 'Zob') }
+	let(:player1) { create(:party) }
+	let(:player2) { create(:party, name: 'Zob') }
 	let(:match) { create(:match, p1: player1, 
 	                             p2: player2,
 	                             p1_first_server: true,
