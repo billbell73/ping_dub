@@ -37,5 +37,23 @@ module Doubles
 			(toggle_number/2) % 2
 		end 
 	end
+
+	def doubles_server
+		serving_pair = p1_serving? ? self.p1 : self.p2
+		if self.server_is_first_partner? 
+			serving_pair.players.first
+		else
+			serving_pair.players.last
+		end	
+	end
+
+	def doubles_receiver
+		receiving_pair = p1_serving? ? self.p2 : self.p1
+		if self.receiver_is_first_partner?
+			receiving_pair.players.first
+		else
+			receiving_pair.players.last
+		end
+	end
 	
 end

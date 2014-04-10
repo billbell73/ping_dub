@@ -1,15 +1,13 @@
 require 'spec_helper'
 
-describe "doubles methods" do
+describe "doubles-only methods" do
+
+	def increment(points, match, pair_number)
+		points.times{ match.increment_score(pair_number) }
+	end
   
 	let (:party1) { create(:party)}
 	let (:party2) { create(:party)}
-
-	let (:player1) { create(:player, party: party1) }
-  let (:player2) { create(:player, party: party1) }
-  let (:player3) { create(:player, party: party2) }
-  let (:player4) { create(:player, party: party2) }
-
   let (:match3) { create(:match, doubles_match: true,
   	                            p1: party1, 
 	                            	p2: party2,
@@ -17,18 +15,19 @@ describe "doubles methods" do
 	                            	p1_starts_left: true,
 	                            	best_of: 3) }
 
- 	def increment(points, match, pair_number)
-		points.times{ match.increment_score(pair_number) }
+  before do
+  	create(:player, name: 'a', party: party1) 
+  	create(:player, name: 'b', party: party1) 
+  	create(:player, name: 'c', party: party2) 
+  	create(:player, name: 'd', party: party2)
+
+  	create(:game, match: match3,
+		              p1_started_game_serving: true,
+		              initial_server_first_partner: true,
+		              initial_receiver_first_partner: true)
 	end
 	
 	context 'when first partners contend initial point' do
-		
-		before do
-			create(:game, match: match3,
-				              p1_started_game_serving: true,
-				              initial_server_first_partner: true,
-				              initial_receiver_first_partner: true)
-		end
 
 		it 'knows which of initial server pair is involved in 1st shot of point 1' do
 			expect(match3.initial_serving_pair_first_partner_involved?)
@@ -51,15 +50,25 @@ describe "doubles methods" do
 			expect(match3.receiver_is_first_partner?).to equal true
 		end
 
+		it 'knows who is serving for 8th point' do
+			increment(7, match3, 1)
+			expect(match3.doubles_server.name).to eq 'd'
+		end
+
+		it 'knows who is receiving for 8th point' do
+			increment(7, match3, 1)
+			expect(match3.doubles_receiver.name).to eq 'a'
+		end
+
 	end
 
 	context 'when server is first partner receiver is second for initial point' do
 
 		before do
 			create(:game, match: match3,
-				              p1_started_game_serving: true,
-				              initial_server_first_partner: true,
-				              initial_receiver_first_partner: false)
+			              p1_started_game_serving: false,
+			              initial_server_first_partner: true,
+			              initial_receiver_first_partner: false)
 		end
 
 		it 'knows which partner of pair is serving for 3rd point' do
@@ -70,6 +79,16 @@ describe "doubles methods" do
 		it 'knows which partner of pair is receiving for 5th point' do
 			increment(4, match3, 1)
 			expect(match3.receiver_is_first_partner?).to equal true
+		end
+
+		it 'knows who is serving for 9th point' do
+			increment(8, match3, 1)
+			expect(match3.doubles_server.name).to eq 'c'
+		end
+
+		it 'knows who is receiving for 5th point' do
+			increment(4, match3, 1)
+			expect(match3.doubles_receiver.name).to eq 'a'
 		end
 
 	end
