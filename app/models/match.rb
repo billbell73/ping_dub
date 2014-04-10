@@ -26,10 +26,11 @@ class Match < ActiveRecord::Base
     point_winner = get_player player_number.to_i
     point = Point.where(winner: point_winner, game: current_game).last
     if current_game.total_points != 0
-      current_game.update(winner: nil)
       current_game.points.destroy(point) if point
     else
       self.games.destroy(current_game)
+      current_game.update(winner: nil)
+      current_game.points.last.destroy
     end
   end
 

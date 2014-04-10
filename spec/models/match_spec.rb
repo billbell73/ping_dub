@@ -104,11 +104,9 @@ describe Match do
 			expect(match.games.count).to equal 1
 		end
 
-		it 'decrementing 2 points from 0-0 in 2nd game reduces '\
-																				'player\'s 1st game score by 1' do
+		it 'decrementing 2 points from 0-0 in 2nd game destroys '\
+		      'last point of previous game and deletes winner of previous game' do
 			set_score(3, 11, 0, 0)
-			match.decrement_score(2)
-			expect(match.current_game.player_points(player2)).to equal 11
 			match.decrement_score(2)
 			expect(match.current_game.player_points(player2)).to equal 10
 			expect(match.current_game.winner).to equal nil
