@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'Matches API' do
 
-	let(:player1) { create(:party) }
+	let(:player1) { create(:party, name: 'Gee') }
 	let(:player2) { create(:party, name: 'Zob') }
 	let(:match) { create(:match, p1: player1, 
 	                             p2: player2,
@@ -58,14 +58,14 @@ describe 'Matches API' do
     32.times{increment_score(1)}
     expect(@json['matchWinner']).to eq nil
     increment_score(1)
-    expect(@json['matchWinner']).to eq 'Fred'
+    expect(@json['matchWinner']).to eq 'Gee'
   end
 
   it 'returns game winner name when game just won' do
     10.times{increment_score(1)}
     expect(@json['gameJustWonBy']).to eq nil
     increment_score(1)
-    expect(@json['gameJustWonBy']).to eq 'Fred'
+    expect(@json['gameJustWonBy']).to eq 'Gee'
     increment_score(1)
     expect(@json['gameJustWonBy']).to eq nil
   end
