@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140408184811) do
+ActiveRecord::Schema.define(version: 20140410155757) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,9 @@ ActiveRecord::Schema.define(version: 20140408184811) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "match_id"
+    t.boolean  "p1_started_game_serving"
+    t.boolean  "initial_server_first_partner"
+    t.boolean  "initial_receiver_first_partner"
   end
 
   add_index "games", ["match_id"], name: "index_games_on_match_id", using: :btree
@@ -42,11 +45,20 @@ ActiveRecord::Schema.define(version: 20140408184811) do
   add_index "matches", ["p2_id"], name: "index_matches_on_p2_id", using: :btree
   add_index "matches", ["winner_id"], name: "index_matches_on_winner_id", using: :btree
 
-  create_table "players", force: true do |t|
+  create_table "parties", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "players", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "party_id"
+  end
+
+  add_index "players", ["party_id"], name: "index_players_on_party_id", using: :btree
 
   create_table "points", force: true do |t|
     t.integer "winner_id"
