@@ -93,4 +93,27 @@ describe "doubles-only methods" do
 
 	end
 
+	context 'Starting a doubles match with passed match choices' do
+
+		let(:match4) { Match.start_match(nil, nil, 3, true, true, 
+			                               'a', 'b', 'c', 'd',
+			                               true, true, true) }
+
+		it 'can start match' do
+			expect(match4.games.count).to eq 1
+			expect(match4.current_game.points.count).to eq 0
+			expect(match4.best_of).to eq 3
+			expect(match4.p1_first_server).to eq true
+		end
+
+		it 'starts match with correct parties and names' do
+			expect(match4.p1.name).to eq 'a and b'
+			expect(match4.p2.name).to eq 'c and d'
+			expect(match4.p1.players.first.name).to eq 'a'
+			expect(match4.p2.players.last.name).to eq 'd'
+		end
+
+	end
+
+
 end

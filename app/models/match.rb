@@ -86,16 +86,32 @@ class Match < ActiveRecord::Base
     end
   end
 
-  def self.start_match(p1_name, p2_name, best_of=3, 
-                       p1_first_server=true, p1_starts_left=true)
-    player1 = Party.create(name: p1_name)
-    player2 = Party.create(name: p2_name)
-    match = Match.create(p1: player1, 
-                         p2: player2, 
+  def self.start_match(p1_name, p2_name, best_of, 
+                       p1_first_server, p1_starts_left,
+                       partner_a_name=nil, partner_b_name=nil, 
+                       partner_c_name=nil, partner_d_name=nil,
+                       is_fp=nil, ir_fp=nil, doubles_match=nil)
+    if doubles_match
+      party1 = Party.create(name: partner_a_name + " and " + partner_b_name)
+      party2 = Party.create(name: partner_c_name + " and " + partner_d_name)
+      Player.create(name: partner_a_name, party: party1)
+      Player.create(name: partner_b_name, party: party1)
+      Player.create(name: partner_c_name, party: party2)
+      Player.create(name: partner_d_name, party: party2)
+    else
+      party1 = Party.create(name: p1_name)
+      party2 = Party.create(name: p2_name)
+    end
+    match = Match.create(p1: party1, 
+                         p2: party2, 
                          best_of: best_of,
                          p1_first_server: p1_first_server,
-                         p1_starts_left: p1_starts_left)
-    Game.create(match: match)
+                         p1_starts_left: p1_starts_left,
+                         doubles_match: doubles_match)
+    Game.create(match: match, 
+                p1_started_game_serving: p1_first_server,
+                initial_server_first_partner: is_fp,
+                initial_receiver_first_partner: ir_fp)
     match
   end
   
