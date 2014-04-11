@@ -79,7 +79,7 @@ describe 'Matches API' do
 			expect(match.p2.name).to eq 'Mel'
 	  end
 
-		it 'will initiate match with appropriate match choices' do
+		it 'will initiate a singles match with appropriate match choices' do
 	  	post api_matches_path, { p1_name: 'Geoff', 
 			                         p2_name: 'Mel',
 			                         best_of: 5,
@@ -90,6 +90,26 @@ describe 'Matches API' do
 			expect(match.best_of).to eq 5
 			expect(match.p1_first_server).to eq false
 			expect(match.p1_starts_left).to eq false
+	  end
+
+		it 'will initiate a doubles match with appropriate match choices' do
+	  	post api_matches_path, {
+			                         best_of: 3,
+			                         p1_first_server: false,
+			                         p1_starts_left: false,
+			                         partner_a_name: 'a',
+			                         partner_b_name: 'b',
+			                         partner_c_name: 'c',
+			                         partner_d_name: 'd',
+			                         initial_server_first_partner: false,
+			                         initial_receiver_first_partner: false,
+			                         doubles_match: true } 
+			@response, @json = response, JSON.parse(response.body)
+			match = Match.find(@json['match_id'])
+			expect(match.best_of).to eq 3
+			expect(match.p2.name).to eq 'c and d'
+			expect(match.p2.players.first.name).to eq 'c'
+			expect(match.current_game.initial_server_first_partner).to eq false
 	  end
 
 	end

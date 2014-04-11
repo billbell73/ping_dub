@@ -7,7 +7,14 @@ class Api::MatchesController < ApplicationController
 		                           params[:p2_name],
 		                           params[:best_of],
 		                           params[:p1_first_server],
-		                           params[:p1_starts_left])
+		                           params[:p1_starts_left],
+		                           params[:partner_a_name],
+		                           params[:partner_b_name],
+		                           params[:partner_c_name],
+		                           params[:partner_d_name],
+		                           params[:initial_server_first_partner],
+		                           params[:initial_receiver_first_partner],
+		                           params[:doubles_match])
 	end
 
 	def show
