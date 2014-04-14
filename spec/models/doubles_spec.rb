@@ -53,12 +53,17 @@ describe "doubles-only methods" do
 		it 'knows who is serving for 8th point' do
 			increment(7, match3, 1)
 			expect(match3.doubles_server.name).to eq 'd'
+			expect(match3.p2_partner_up_first).to eq 'd'
+			expect(match3.p2_partner_up_second).to eq 'c'
 		end
 
 		it 'knows who is receiving for 8th point' do
 			increment(7, match3, 1)
 			expect(match3.doubles_receiver.name).to eq 'a'
+			expect(match3.p1_partner_up_first).to eq 'a'
+			expect(match3.p1_partner_up_second).to eq 'b'
 		end
+
 
 	end
 
@@ -84,11 +89,15 @@ describe "doubles-only methods" do
 		it 'knows who is serving for 9th point' do
 			increment(8, match3, 1)
 			expect(match3.doubles_server.name).to eq 'c'
+			expect(match3.p2_partner_up_first).to eq 'c'
+			expect(match3.p2_partner_up_second).to eq 'd'
 		end
 
 		it 'knows who is receiving for 5th point' do
 			increment(4, match3, 1)
 			expect(match3.doubles_receiver.name).to eq 'a'
+			expect(match3.p1_partner_up_first).to eq 'a'
+			expect(match3.p1_partner_up_second).to eq 'b'
 		end
 
 	end

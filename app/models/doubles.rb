@@ -16,6 +16,54 @@ module Doubles
 		end
 	end
 
+	def p1_partner_up_second
+		if p1_first_partner_involved?
+			self.p1.players.last.name
+		else
+			self.p1.players.first.name
+		end
+	end
+
+	def p2_partner_up_second
+		if p2_first_partner_involved?
+			self.p2.players.last.name
+		else
+			self.p2.players.first.name
+		end
+	end
+
+	def p1_partner_up_first
+		if p1_first_partner_involved?
+			self.p1.players.first.name
+		else
+			self.p1.players.last.name
+		end
+	end
+
+	def p2_partner_up_first
+		if p2_first_partner_involved?
+			self.p2.players.first.name
+		else
+			self.p2.players.last.name
+		end
+	end
+
+	def p1_first_partner_involved?
+		if current_game.p1_started_game_serving 
+			initial_serving_pair_first_partner_involved?
+		else
+			initial_receiving_pair_first_partner_involved?
+		end
+	end
+
+	def p2_first_partner_involved?
+		if current_game.p1_started_game_serving 
+			initial_receiving_pair_first_partner_involved?
+		else
+			initial_serving_pair_first_partner_involved?
+		end
+	end
+
 	def initial_receiving_pair_first_partner_involved?
 		partner_toggle(0) == 0 ? 
 			current_game.initial_receiver_first_partner : 
