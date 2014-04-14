@@ -104,15 +104,15 @@ describe 'Matches API' do
 			                         partner_b_name: 'b',
 			                         partner_c_name: 'c',
 			                         partner_d_name: 'd',
-			                         initial_server_first_partner: false,
-			                         initial_receiver_first_partner: false,
+			                         p1_partners_in_id_order: false,
+			                         p2_partners_in_id_order: false,
 			                         doubles_match: true } 
 			@response, @json = response, JSON.parse(response.body)
 			match = Match.find(@json['match_id'])
 			expect(match.best_of).to eq 3
 			expect(match.p2.name).to eq 'c and d'
 			expect(match.p2.players.first.name).to eq 'c'
-			expect(match.current_game.initial_server_first_partner).to eq false
+			expect(match.current_game.p1_partners_in_id_order).to eq false
 	  end
 
 	end
@@ -136,8 +136,8 @@ describe 'Matches API' do
 
 	  	create(:game, match: doubles_match,
 			              p1_started_game_serving: true,
-			              initial_server_first_partner: true,
-			              initial_receiver_first_partner: true)
+			              p1_partners_in_id_order: true,
+			              p2_partners_in_id_order: true)
 		end
 
 		context 'within game' do

@@ -9,10 +9,10 @@ json.gameJustWonBy @match.game_just_won_by
 json.doubles @match.doubles_match
 
 if @match.doubles_match
-	json.p1PartnerUpFirst @match.p1_partner_up_first
-	json.p1PartnerUpSecond @match.p1_partner_up_second
-	json.p2PartnerUpFirst @match.p2_partner_up_first
-	json.p2PartnerUpSecond @match.p2_partner_up_second
+	json.p1PartnerUpFirst @match.partner_involved(1)
+	json.p1PartnerUpSecond @match.partner_not_involved(1)
+	json.p2PartnerUpFirst @match.partner_involved(2)
+	json.p2PartnerUpSecond @match.partner_not_involved(2)
 else
   json.p1name @match.p1.name
   json.p2name @match.p2.name

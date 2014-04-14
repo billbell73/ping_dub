@@ -12,8 +12,8 @@ class Api::MatchesController < ApplicationController
 		                           params[:partner_b_name],
 		                           params[:partner_c_name],
 		                           params[:partner_d_name],
-		                           params[:initial_server_first_partner],
-		                           params[:initial_receiver_first_partner],
+		                           params[:p1_partners_in_id_order],
+		                           params[:p2_partners_in_id_order],
 		                           params[:doubles_match])
 	end
 
