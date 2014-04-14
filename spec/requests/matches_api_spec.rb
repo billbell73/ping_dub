@@ -116,5 +116,61 @@ describe 'Matches API' do
 	  end
 
 	end
+
+	context 'updating doubles match' do
+
+		let (:party1) { create(:party, name: 'a and b')}
+		let (:party2) { create(:party, name: 'c and d')}
+	  let (:doubles_match) { create(:match, doubles_match: true,
+  	                                      p1: party1, 
+	                            	          p2: party2,
+	                            	          p1_first_server: true,
+	                            	          p1_starts_left: true,
+	                            	          best_of: 5) }
+
+	  before do
+	  	create(:player, name: 'a', party: party1) 
+	  	create(:player, name: 'b', party: party1) 
+	  	create(:player, name: 'c', party: party2) 
+	  	create(:player, name: 'd', party: party2)
+
+	  	create(:game, match: doubles_match,
+			              p1_started_game_serving: true,
+			              initial_server_first_partner: true,
+			              initial_receiver_first_partner: true)
+		end
+
+		it 'returns a success status code' do
+		  increment_score(1, doubles_match)
+		  expect(@response).to be_success
+		end
+
+		it 'can increment score for a pair' do
+		  expect { increment_score(1, doubles_match) }.to change{ doubles_match.current_game.
+		                                            player_points(party1) }.by(1)
+		end
+
+		it 'can decrement score for a pair' do
+	    5.times{ increment_score(1, doubles_match) }
+	    expect { decrement_score(1, doubles_match) }.to change { doubles_match.current_game.
+			                                           player_points(party1) }.by(-1)
+	  end
+
+	  it 'returns details for pairs' do
+	  	increment_score(1, doubles_match)
+	    expect(@json['isP1Left']).to eq true
+	    expect(@json['isP1Serving']).to eq true
+	  end
+
+	  it 'returns who involved in first shot of point' do
+	  	increment_score(1, doubles_match)
+	  	expect(@json['p1PartnerUpFirst']).to eq 'a'
+	  	expect(@json['p2PartnerUpFirst']).to eq 'c'
+	  	expect(@json['p1PartnerUpSecond']).to eq 'b'
+	  	expect(@json['p2PartnerUpSecond']).to eq 'd'
+	  end
+
+	end
+
 	
 end
