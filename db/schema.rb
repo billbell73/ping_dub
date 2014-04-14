@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140410155757) do
+ActiveRecord::Schema.define(version: 20140414143327) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,8 +22,8 @@ ActiveRecord::Schema.define(version: 20140410155757) do
     t.datetime "updated_at"
     t.integer  "match_id"
     t.boolean  "p1_started_game_serving"
-    t.boolean  "initial_server_first_partner"
-    t.boolean  "initial_receiver_first_partner"
+    t.boolean  "p1_partners_in_id_order"
+    t.boolean  "p2_partners_in_id_order"
   end
 
   add_index "games", ["match_id"], name: "index_games_on_match_id", using: :btree

@@ -23,47 +23,44 @@ describe "doubles-only methods" do
 
   	create(:game, match: match3,
 		              p1_started_game_serving: true,
-		              initial_server_first_partner: true,
-		              initial_receiver_first_partner: true)
+		              p1_partners_in_id_order: true,
+		              p2_partners_in_id_order: false)
 	end
 	
 	context 'when first partners contend initial point' do
 
-		it 'knows which of initial server pair is involved in 1st shot of point 1' do
-			expect(match3.initial_serving_pair_first_partner_involved?)
-																																.to equal true
+
+		it 'knows offsets for pair1' do
+			expect(match3.partner_order_offset(1)).to eq 0
+			expect(match3.serve_offset(1)).to eq 2
 		end
 
-		it 'knows which of initial server pair is involved in 1st shot of point 6' do
+		it 'knows offsets for pair2' do
+			expect(match3.partner_order_offset(2)).to eq 4
+			expect(match3.serve_offset(2)).to eq 0
+		end
+
+		it 'knows which of pair1 involved in first shot of game' do
+			expect(match3.partner_involved(1)).to eq 'a'
+			expect(match3.partner_not_involved(1)).to eq 'b'
+		end
+
+		it 'knows which of pair2 involved in first shot of game' do
+			expect(match3.partner_involved(2)).to eq 'd'
+			expect(match3.partner_not_involved(2)).to eq 'c'
+		end
+
+		it 'knows which of pair 1 involved in 1st shot of point 6' do
 			increment(5, match3, 1)
-			expect(match3.initial_serving_pair_first_partner_involved?)
-																																.to equal false
+			expect(match3.partner_involved(1)).to eq 'b'
+			expect(match3.partner_not_involved(1)).to eq 'a'
 		end
 
-		it 'knows which partner of pair is serving for 5th point' do
-			increment(4, match3, 1)
-			expect(match3.server_is_first_partner?).to equal false
+		it 'knows which of pair 2 involved in 1st shot of point 10' do
+			increment(9, match3, 1)
+			expect(match3.partner_involved(2)).to eq 'd'
+			expect(match3.partner_not_involved(2)).to eq 'c'
 		end
-
-		it 'knows which partner of pair is receiving for 7th point' do
-			increment(6, match3, 1)
-			expect(match3.receiver_is_first_partner?).to equal true
-		end
-
-		it 'knows who is serving for 8th point' do
-			increment(7, match3, 1)
-			expect(match3.doubles_server.name).to eq 'd'
-			expect(match3.p2_partner_up_first).to eq 'd'
-			expect(match3.p2_partner_up_second).to eq 'c'
-		end
-
-		it 'knows who is receiving for 8th point' do
-			increment(7, match3, 1)
-			expect(match3.doubles_receiver.name).to eq 'a'
-			expect(match3.p1_partner_up_first).to eq 'a'
-			expect(match3.p1_partner_up_second).to eq 'b'
-		end
-
 
 	end
 
@@ -72,35 +69,17 @@ describe "doubles-only methods" do
 		before do
 			create(:game, match: match3,
 			              p1_started_game_serving: false,
-			              initial_server_first_partner: true,
-			              initial_receiver_first_partner: false)
+			              p1_partners_in_id_order: false,
+		              	p2_partners_in_id_order: true)
 		end
 
-		it 'knows which partner of pair is serving for 3rd point' do
+		it 'knows which partner of pair1 is involved in 3rd point' do
 			increment(2, match3, 1)
-			expect(match3.receiver_is_first_partner?).to equal false
+			expect(match3.partner_involved(1)).to eq 'b'
+			expect(match3.partner_not_involved(1)).to eq 'a'
 		end
 
-		it 'knows which partner of pair is receiving for 5th point' do
-			increment(4, match3, 1)
-			expect(match3.receiver_is_first_partner?).to equal true
-		end
-
-		it 'knows who is serving for 9th point' do
-			increment(8, match3, 1)
-			expect(match3.doubles_server.name).to eq 'c'
-			expect(match3.p2_partner_up_first).to eq 'c'
-			expect(match3.p2_partner_up_second).to eq 'd'
-		end
-
-		it 'knows who is receiving for 5th point' do
-			increment(4, match3, 1)
-			expect(match3.doubles_receiver.name).to eq 'a'
-			expect(match3.p1_partner_up_first).to eq 'a'
-			expect(match3.p1_partner_up_second).to eq 'b'
-		end
-
-    it 'knows server choice for next game' do
+		it 'knows server choice for next game' do
     	expect(match3.next_game_server_choice(0).name).to eq 'a'
    	end
 
