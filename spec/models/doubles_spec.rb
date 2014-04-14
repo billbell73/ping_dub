@@ -97,7 +97,7 @@ describe "doubles-only methods" do
 
 		let(:match4) { Match.start_match(nil, nil, 3, true, true, 
 			                               'a', 'b', 'c', 'd',
-			                               true, true, true) }
+			                               true, true, "true") }
 
 		it 'can start match' do
 			expect(match4.games.count).to eq 1

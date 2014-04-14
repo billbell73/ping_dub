@@ -93,7 +93,7 @@ class Match < ActiveRecord::Base
                        partner_a_name=nil, partner_b_name=nil, 
                        partner_c_name=nil, partner_d_name=nil,
                        is_fp=nil, ir_fp=nil, doubles_match=nil)
-    if doubles_match
+    if doubles_match == "true"
       party1 = Party.create(name: partner_a_name + " and " + partner_b_name)
       party2 = Party.create(name: partner_c_name + " and " + partner_d_name)
       Player.create(name: partner_a_name, party: party1)
