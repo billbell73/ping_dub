@@ -103,5 +103,18 @@ module Doubles
 			receiving_pair.players.last
 		end
 	end
+
+	def next_game_server_choice(index)
+		if current_game.p1_started_game_serving
+			p2.players.offset(index).first
+		else
+			p1.players.offset(index).first
+		end
+	end
+
+	def new_game(next_server_id)
+		new_p1_start = !current_game.p1_started_game_serving
+		Game.create(match: self, p1_started_game_serving: new_p1_start)
+	end
 	
 end

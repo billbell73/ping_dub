@@ -53,7 +53,7 @@ class Match < ActiveRecord::Base
       self.update(winner: point_winner)
     else
       @game_just_won_by = current_game.winner.name
-      Game.create(match: self)
+      Game.create(match: self) unless self.doubles_match
     end
   end
 

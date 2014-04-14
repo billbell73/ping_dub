@@ -140,37 +140,67 @@ describe 'Matches API' do
 			              initial_receiver_first_partner: true)
 		end
 
-		it 'returns a success status code' do
-		  increment_score(1, doubles_match)
-		  expect(@response).to be_success
+		context 'within game' do
+
+			it 'returns a success status code' do
+			  increment_score(1, doubles_match)
+			  expect(@response).to be_success
+			end
+
+			it 'can increment score for a pair' do
+			  expect { increment_score(1, doubles_match) }.to change{ doubles_match.current_game.
+			                                            player_points(party1) }.by(1)
+			end
+
+			it 'can decrement score for a pair' do
+		    5.times{ increment_score(1, doubles_match) }
+		    expect { decrement_score(1, doubles_match) }.to change { doubles_match.current_game.
+				                                           player_points(party1) }.by(-1)
+		  end
+
+		  it 'returns details for pairs' do
+		  	increment_score(1, doubles_match)
+		    expect(@json['isP1Left']).to eq true
+		    expect(@json['isP1Serving']).to eq true
+		  end
+
+		  it 'returns who involved in first shot of point' do
+		  	increment_score(1, doubles_match)
+		  	expect(@json['p1PartnerUpFirst']).to eq 'a'
+		  	expect(@json['p2PartnerUpFirst']).to eq 'c'
+		  	expect(@json['p1PartnerUpSecond']).to eq 'b'
+		  	expect(@json['p2PartnerUpSecond']).to eq 'd'
+		  end
+
 		end
 
-		it 'can increment score for a pair' do
-		  expect { increment_score(1, doubles_match) }.to change{ doubles_match.current_game.
-		                                            player_points(party1) }.by(1)
+		context 'at end of a game' do
+
+			it 'at game end offers potential next servers' do
+				5.times{increment_score(1, doubles_match)}
+		    11.times{increment_score(2, doubles_match)}
+		    expect(@json['nextServerAName']).to eq 'c'
+		    expect(@json['nextServerBName']).to eq 'd'
+		  end
+
 		end
 
-		it 'can decrement score for a pair' do
-	    5.times{ increment_score(1, doubles_match) }
-	    expect { decrement_score(1, doubles_match) }.to change { doubles_match.current_game.
-			                                           player_points(party1) }.by(-1)
-	  end
+	  context 'new game, after server and receiver chosen' do
 
-	  it 'returns details for pairs' do
-	  	increment_score(1, doubles_match)
-	    expect(@json['isP1Left']).to eq true
-	    expect(@json['isP1Serving']).to eq true
-	  end
+		  before do
+		  	5.times{increment_score(1, doubles_match)}
+		    11.times{increment_score(2, doubles_match)}
+	  		patch api_match_path(doubles_match), 
+		          { nextServer: doubles_match.p2.players.first.id }
+		    increment_score(1, doubles_match)
+	  	end
 
-	  it 'returns who involved in first shot of point' do
-	  	increment_score(1, doubles_match)
-	  	expect(@json['p1PartnerUpFirst']).to eq 'a'
-	  	expect(@json['p2PartnerUpFirst']).to eq 'c'
-	  	expect(@json['p1PartnerUpSecond']).to eq 'b'
-	  	expect(@json['p2PartnerUpSecond']).to eq 'd'
-	  end
+			it 'starts new game on being given next server choice' do
+		    expect(@json['p1points']).to eq 1
+		    expect(@json['p2games']).to eq 1
+		  end
 
-	end
+		end
 
-	
+	end	
 end

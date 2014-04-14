@@ -100,6 +100,10 @@ describe "doubles-only methods" do
 			expect(match3.p1_partner_up_second).to eq 'b'
 		end
 
+    it 'knows server choice for next game' do
+    	expect(match3.next_game_server_choice(0).name).to eq 'a'
+   	end
+
 	end
 
 	context 'Starting a doubles match with passed match choices' do
