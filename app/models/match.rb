@@ -35,9 +35,11 @@ class Match < ActiveRecord::Base
     if current_game.total_points != 0
       current_game.points.destroy(point) if point
     else
-      self.games.destroy(current_game)
-      current_game.update(winner: nil)
-      current_game.points.last.destroy
+      unless self.games.count == 1
+        self.games.destroy(current_game)
+        current_game.update(winner: nil)
+        current_game.points.last.destroy
+      end
     end
   end
 

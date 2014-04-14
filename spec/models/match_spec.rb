@@ -112,6 +112,12 @@ describe Match do
 			expect(match.current_game.winner).to equal nil
 		end	
 
+		it 'decrementing score from 0-0 in first game does nothing' do
+			set_score(0, 0)
+			match.decrement_score(2)
+			expect(match.current_game.player_points(player2)).to equal 0
+		end
+
 	end
 
 	context 'Identifying server' do
