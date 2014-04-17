@@ -26,13 +26,13 @@ module Doubles
 		end
 	end
 
-	def partner_involved(pair_number)
+	def partner_up_first(pair_number)
 		offset = serve_offset(pair_number) + partner_order_offset(pair_number)
 		index = partner_toggle(offset)
 		self.send("p" + pair_number.to_s).players.offset(index).first.name
 	end
 
-	def partner_not_involved(pair_number)
+	def partner_up_second(pair_number)
 		offset = serve_offset(pair_number) + partner_order_offset(pair_number)
 		index = partner_toggle(offset) == 0 ? 1 : 0
 		self.send("p" + pair_number.to_s).players.offset(index).first.name

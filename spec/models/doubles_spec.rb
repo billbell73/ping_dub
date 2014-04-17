@@ -41,25 +41,25 @@ describe "doubles-only methods" do
 		end
 
 		it 'knows which of pair1 involved in first shot of game' do
-			expect(match3.partner_involved(1)).to eq 'a'
-			expect(match3.partner_not_involved(1)).to eq 'b'
+			expect(match3.partner_up_first(1)).to eq 'a'
+			expect(match3.partner_up_second(1)).to eq 'b'
 		end
 
 		it 'knows which of pair2 involved in first shot of game' do
-			expect(match3.partner_involved(2)).to eq 'd'
-			expect(match3.partner_not_involved(2)).to eq 'c'
+			expect(match3.partner_up_first(2)).to eq 'd'
+			expect(match3.partner_up_second(2)).to eq 'c'
 		end
 
 		it 'knows which of pair 1 involved in 1st shot of point 6' do
 			increment(5, match3, 1)
-			expect(match3.partner_involved(1)).to eq 'b'
-			expect(match3.partner_not_involved(1)).to eq 'a'
+			expect(match3.partner_up_first(1)).to eq 'b'
+			expect(match3.partner_up_second(1)).to eq 'a'
 		end
 
 		it 'knows which of pair 2 involved in 1st shot of point 10' do
 			increment(9, match3, 1)
-			expect(match3.partner_involved(2)).to eq 'd'
-			expect(match3.partner_not_involved(2)).to eq 'c'
+			expect(match3.partner_up_first(2)).to eq 'd'
+			expect(match3.partner_up_second(2)).to eq 'c'
 		end
 
 	end
@@ -75,8 +75,8 @@ describe "doubles-only methods" do
 
 		it 'knows which partner of pair1 is involved in 3rd point' do
 			increment(2, match3, 1)
-			expect(match3.partner_involved(1)).to eq 'b'
-			expect(match3.partner_not_involved(1)).to eq 'a'
+			expect(match3.partner_up_first(1)).to eq 'b'
+			expect(match3.partner_up_second(1)).to eq 'a'
 		end
 
 		it 'knows server choice for next game' do
