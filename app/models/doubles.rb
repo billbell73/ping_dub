@@ -47,8 +47,28 @@ module Doubles
 	end
 
 	def new_game(next_server_id)
-		new_p1_start = !current_game.p1_started_game_serving
-		Game.create(match: self, p1_started_game_serving: new_p1_start)
+		p1_starts_next_game = !current_game.p1_started_game_serving
+		if p1_starts_next_game
+			new_p1_id_order = next_game_first_server_pair_in_id_order(next_server_id, 1)
+			new_p2_id_order = next_game_first_receiver_pair_in_id_order(new_p1_in_order)
+		else
+			new_p2_id_order = next_game_first_server_pair_in_id_order(next_server_id, 2)
+			new_p1_id_order = next_game_first_receiver_pair_in_id_order(new_p1_in_order)
+		end
+		Game.create(match: self, 
+		            p1_started_game_serving: new_p1_start,
+		            p1_partners_in_id_order: new_p1_id_order,
+		            p2_partners_in_id_order: new_p2_id_order)
 	end
-	
+
+	def next_game_first_server_pair_in_id_order(server_id, pair_number)
+		Player.find(server_id) == self.send("p" + pair_number.to_s).players.first
+	end
+
+	def next_game_first_receiver_pair_in_id_order(new_server_order)
+		same_order_now = current_game.p1_partners_in_id_order == 
+		                 current_game.p2_partners_in_id_order
+		same_order_now ? new_server_order : !new_server_order
+	end
+
 end
