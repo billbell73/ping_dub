@@ -65,8 +65,8 @@ describe "doubles-only methods" do
 		context 'starting next game' do
 
 			it 'knows server options for next game' do
-    		expect(match3.next_game_server_choice(0).name).to eq 'c'
-    		expect(match3.next_game_server_choice(1).name).to eq 'd'
+    		expect(match3.next_game_server_option(0).name).to eq 'c'
+    		expect(match3.next_game_server_option(1).name).to eq 'd'
    		end
 
 			it 'when first partner chooses to serve, knows order of serving pair' +

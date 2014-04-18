@@ -38,7 +38,7 @@ module Doubles
 		self.send("p" + pair_number.to_s).players.offset(index).first.name
 	end
 
-	def next_game_server_choice(index)
+	def next_game_server_option(index)
 		if current_game.p1_started_game_serving
 			p2.players.offset(index).first
 		else

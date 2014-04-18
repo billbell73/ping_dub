@@ -19,9 +19,9 @@ else
 end
 
 if @match.game_just_won_by and @match.doubles_match
-	json.nextServerAName @match.next_game_server_choice(0).name
-	json.nextServerAId @match.next_game_server_choice(0).id
-	json.nextServerBName @match.next_game_server_choice(1).name
-	json.nextServerBId @match.next_game_server_choice(1).id
+	json.nextServerAName @match.next_game_server_option(0).name
+	json.nextServerAId @match.next_game_server_option(0).id
+	json.nextServerBName @match.next_game_server_option(1).name
+	json.nextServerBId @match.next_game_server_option(1).id
 end
 
