@@ -200,6 +200,16 @@ describe 'Matches API' do
 		    expect(@json['p2games']).to eq 1
 		  end
 
+			it 'knows which partner serving second point of new game' do
+		    expect(@json['p2PartnerUpFirst']).to eq 'c'
+		    expect(@json['p2PartnerUpSecond']).to eq 'd'
+		  end
+
+			it 'knows which partner receiving second point of new game' do
+		    expect(@json['p1PartnerUpFirst']).to eq 'a'
+		    expect(@json['p1PartnerUpSecond']).to eq 'b'
+		  end
+
 		end
 
 	end	

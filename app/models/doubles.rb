@@ -49,16 +49,20 @@ module Doubles
 	def new_game(next_server_id)
 		p1_starts_next_game = !current_game.p1_started_game_serving
 		if p1_starts_next_game
-			new_p1_id_order = next_game_first_server_pair_in_id_order(next_server_id, 1)
-			new_p2_id_order = next_game_first_receiver_pair_in_id_order(new_p1_in_order)
+			p1_in_id_order_next_game = 
+				next_game_first_server_pair_in_id_order(next_server_id, 1)
+			p2_in_id_order_next_game = 
+				next_game_first_receiver_pair_in_id_order(p1_in_id_order_next_game)
 		else
-			new_p2_id_order = next_game_first_server_pair_in_id_order(next_server_id, 2)
-			new_p1_id_order = next_game_first_receiver_pair_in_id_order(new_p1_in_order)
+			p2_in_id_order_next_game = 
+				next_game_first_server_pair_in_id_order(next_server_id, 2)
+			p1_in_id_order_next_game = 
+				next_game_first_receiver_pair_in_id_order(p2_in_id_order_next_game)
 		end
 		Game.create(match: self, 
-		            p1_started_game_serving: new_p1_start,
-		            p1_partners_in_id_order: new_p1_id_order,
-		            p2_partners_in_id_order: new_p2_id_order)
+		            p1_started_game_serving: p1_starts_next_game,
+		            p1_partners_in_id_order: p1_in_id_order_next_game,
+		            p2_partners_in_id_order: p2_in_id_order_next_game)
 	end
 
 	def next_game_first_server_pair_in_id_order(server_id, pair_number)

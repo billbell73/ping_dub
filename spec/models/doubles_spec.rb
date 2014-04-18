@@ -70,29 +70,31 @@ describe "doubles-only methods" do
    		end
 
 			it 'when first partner chooses to serve, knows order of serving pair' +
-			   ' for next game', :focus => true do
+			   ' for next game' do
     		expect(match3.next_game_first_server_pair_in_id_order(match3
     		       .p2.players.first.id, 2)).to eq true
    		end
 
 			it 'when second partner chooses to serve, knows order of serving pair' +
-			   ' for next game', :focus => true do
+			   ' for next game' do
     		expect(match3.next_game_first_server_pair_in_id_order(match3
     		       .p2.players.last.id, 2)).to eq false
    		end
 
 			it 'can work out receiver pair order for next game, when first partner' +
-			   ' of other pair serving first', :focus => true do
+			   ' of other pair serving first' do
 				next_servers_in_order = true
-    		expect(match3.next_game_first_receiver_pair_in_id_order(next_servers_in_order))
-    		                                                        .to eq false
+    		expect(match3.
+    		       next_game_first_receiver_pair_in_id_order(next_servers_in_order))
+    		                                                            .to eq false
    		end
 
 			it 'can work out receiver pair order for next game, when second partner' +
-			   ' of other pair serving first', :focus => true do
+			   ' of other pair serving first' do
 				next_servers_in_order = false
-    		expect(match3.next_game_first_receiver_pair_in_id_order(next_servers_in_order))
-    		                                                        .to eq true
+    		expect(match3.
+    		       next_game_first_receiver_pair_in_id_order(next_servers_in_order))
+    		                                                             .to eq true
    		end
 
 		end
@@ -117,16 +119,17 @@ describe "doubles-only methods" do
 		context 'starting next game' do
 
 			it 'when second partner chooses to serve, knows order of serving pair' +
-			   ' for next game', :focus => true do
+			   ' for next game' do
     		expect(match3.next_game_first_server_pair_in_id_order(match3
     		       .p1.players.last.id, 1)).to eq false
    		end
 
 			it 'can work out receiver pair order for next game, when second partner' +
-			   ' of other pair serving first', :focus => true do
+			   ' of other pair serving first' do
 				next_servers_in_order = false
-    		expect(match3.next_game_first_receiver_pair_in_id_order(next_servers_in_order))
-    		                                                        .to eq true
+    		expect(match3.
+    		       next_game_first_receiver_pair_in_id_order(next_servers_in_order))
+    		                                                             .to eq true
    		end
 
 		end
