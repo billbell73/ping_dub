@@ -101,7 +101,8 @@ describe "doubles-only methods" do
 
 	end
 
-	context 'when server is first partner receiver is second for initial point' do
+	context 'when initial server is pair 2 first partner, receiver is' + 
+	        'pair 1 second partner' do
 
 		before do
 			create(:game, match: match3,
@@ -133,6 +134,8 @@ describe "doubles-only methods" do
    		end
 
 		end
+
+		
 		
 	end
 

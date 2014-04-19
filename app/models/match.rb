@@ -80,7 +80,7 @@ class Match < ActiveRecord::Base
 
   def game_type(nth_game)
     if nth_game == self.best_of
-      LastGame.new(self.p1_starts_left, self.p1_first_server)
+      LastGame.new(self.p1_starts_left, self.p1_first_server, self)
     elsif nth_game % 2 == 1
       OddGame.new(self.p1_starts_left, self.p1_first_server)
     else
