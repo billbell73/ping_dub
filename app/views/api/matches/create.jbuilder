@@ -1,1 +1,2 @@
-json.match_id @match.id
+json.matchId @match.id
+json.isDoubles @match.doubles_match
